@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro com validação</title>
+</head>
+<body>
+  <!-- HTML pronto. Você edita apenas o js/script.js. -->
+  <h1>Criar conta</h1>
+
+  <form id="cadastro">
+    <p>
+      <label>Nome: <input id="nome" type="text" placeholder="Seu nome" /></label>
+    </p>
+    <p>
+      <label>Senha: <input id="senha" type="password" placeholder="mínimo 6 caracteres" /></label>
+    </p>
+    <p>
+      <label><input id="aceito" type="checkbox" /> Aceito os termos</label>
+    </p>
+    <button id="enviar" type="submit">Cadastrar</button>
+    <p id="aviso"></p>
+  </form>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

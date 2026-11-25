@@ -1,0 +1,7 @@
+{
+  "name": "exercicio-exb303formulario",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "bash scripts/run_tests.sh" },
+  "devDependencies": { "playwright": "^1.49.0" }
+}

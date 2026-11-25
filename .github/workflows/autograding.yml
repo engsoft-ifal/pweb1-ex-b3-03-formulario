@@ -1,0 +1,61 @@
+name: Corretor automatico
+
+# Roda a cada envio do aluno e tambem sob demanda (aba Actions -> Run workflow).
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+# Se o aluno enviar varias vezes seguidas, cancela as execucoes anteriores.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  corrigir:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Baixar o codigo do aluno
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Instalar dependencias
+        run: npm ci || npm install
+
+      # Cacheia o navegador do Playwright (~/.cache/ms-playwright) para NAO
+      # rebaixar o Chromium a cada execucao — principal economia de minutos.
+      - name: Cache do navegador (Playwright)
+        id: pw-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package.json') }}
+
+      - name: Instalar o navegador (Chromium)
+        # Com cache, o Chromium ja existe e o install so confere (rapido);
+        # sem cache, baixa. As libs de sistema (--with-deps) sempre entram.
+        run: npx playwright install --with-deps chromium
+
+      # Feedback: mostra a nota parcial SEM reprovar o run (nao dispara e-mail
+      # de "run failed"). Vale a melhor versao ate o prazo; o professor clona o
+      # repositorio e corrige localmente. Por isso aqui sempre terminamos 0.
+      - name: Rodar o corretor (feedback)
+        run: |
+          chmod +x scripts/run_tests.sh
+          set +e
+          ./scripts/run_tests.sh | tee /tmp/corretor.txt
+          set -e
+          {
+            echo "### Correção automática (feedback — não é a nota oficial)"
+            echo ""
+            echo '```'
+            cat /tmp/corretor.txt
+            echo '```'
+            echo ""
+            echo "> Vale a **melhor versão enviada até o prazo**. O professor **clona e corrige** este repositório ao final — deixe o feedback em **100/100**."
+          } >> "$GITHUB_STEP_SUMMARY"
