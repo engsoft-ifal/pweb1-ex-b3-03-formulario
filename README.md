@@ -41,3 +41,7 @@ quiser para melhorar.
 > 📌 Vale a **melhor versão enviada até o prazo** (veja a data no **Google Classroom**).
 > O professor **clona o seu repositório e corrige** ao final — então o que importa é o
 > `js/script.js` da sua última entrega estar funcionando (feedback **100/100** no Actions).
+>
+> ✅ **Não esqueça:** cole o **link do seu repositório** (ex.:
+> `https://github.com/SEU-USUARIO/pweb1-ex-b3-03-formulario`) na **planilha de entregas**
+> do Google Classroom. É por ela que o professor coleta e corrige.
